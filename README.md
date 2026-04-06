@@ -42,24 +42,12 @@ A community maintained open source project aimed at making personal portfolio fo
 
 <p align="center"><img src="./readme_assets/Education_Page.gif"></p>
 
-## How to use this?🛠
-
-[Check out our awesome Documentation](https://smaranjitghose.github.io/awesome-portfolio-websites/)
 
 ## Contribution Guidelines🏗
 
 Are we missing any of your favorite features, which you think you can add to it❓ We invite you to contribute to this project and improve it further.
 
-Click on the image below to set up and contribute to the project or [Click here](https://github.com/smaranjitghose/awesome-portfolio-websites/blob/master/CONTRIBUTING.md)
 
-<a href = "https://github.com/smaranjitghose/awesome-portfolio-websites/blob/master/CONTRIBUTING.md">
-<img src = "./readme_assets/Contribution.png"></a>
-
-## Portfolio Owner👨🏫:
-
-| <img src = "https://avatars2.githubusercontent.com/u/46641503?v=4"> | <img src = "https://avatars2.githubusercontent.com/u/40017559?v=4"> | 
-| :----------------------------------------------------------: 
-|     [mwakidenis](https://github.com/mwakidenis)                        
 
 
 ## Open Source Programs we have been a part of:
