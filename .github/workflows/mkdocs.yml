@@ -1,0 +1,20 @@
+name: Build and Deploy Documentation using MkDocs
+# The events that triggers the workflow
+on:
+  push:
+    branches: documentation
+  pull_request:
+    branches: documentation
+
+jobs:
+  build:
+    name: Build and Deploy Documentation using MkDocs
+    # The machine each job should run
+    runs-on: ubuntu-latest
+    # The tasks each job should run
+    steps:
+      - name: Checkout Master
+        uses: actions/checkout@v2
+
+      - name: Build and Deploy Documentation using MkDocs
+        uses: Tangerine-Community/tangy-mkdocs-build-action@v1
