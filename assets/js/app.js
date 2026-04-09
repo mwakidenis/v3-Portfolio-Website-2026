@@ -138,13 +138,13 @@ let footer = $(`
              <div class="form-header">
                 <h6 class="display">Get in Touch</h6>
               </div>
-                <form name="form1" action="https://formcarry.com/s/BywEPAJNb" method="POST" accept-charset="UTF-8" >
+                <form name="form1" action="https://formspree.io/f/mrbpogeb" method="POST" accept-charset="UTF-8" >
                   <input id="name" type="text" name="name" placeholder="Your Name" required/>
                   <input id="email" type="email" name="email" placeholder="Email Address" required/>                  
                   <textarea id="textArea" name="message" placeholder="Type your Message" required></textarea>
               
                   <div id="main">
-                    <button id="lnch" type="button" value="Send" >Send</button>
+                    <button id="lnch" type="submit" value="Send" >Send</button>
                     <div id="lnch_btn"><i class="fas fa-space-shuttle"></i></div>
                   </div>
                 </form>
@@ -440,12 +440,39 @@ $(window).on("load", function () {
 
 
 $(function submitAnimation() {
+  const form = document.querySelector('form[name="form1"]')
   const name = document.querySelector("#name")
   const emailAdress = document.querySelector("#email")
   const text = document.querySelector("#textArea")
+  const submitButton = document.querySelector("#lnch")
+  const launchIcon = document.querySelector("#lnch_btn")
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mrbpogeb'
   const emailPattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 
-  $("#lnch").on("click", function () {
+  function setStatus(status) {
+    if (status === 'sending') {
+      submitButton.disabled = true
+      submitButton.classList.add('launching')
+      submitButton.textContent = 'Sending'
+      launchIcon.classList.add('launching')
+      return
+    }
+
+    if (status === 'sent') {
+      submitButton.classList.add('launched')
+      submitButton.textContent = 'SENT'
+      launchIcon.classList.add('launched')
+      return
+    }
+
+    submitButton.disabled = false
+    submitButton.classList.remove('launching', 'launched')
+    submitButton.textContent = 'Send'
+    launchIcon.classList.remove('launching', 'launched')
+  }
+
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault()
 
     // Check if the name field is empty or contains a number
     if (name.value == "" || (/\d/.test(name.value))) {
@@ -463,19 +490,29 @@ $(function submitAnimation() {
       return;
     }
     else {
+      setStatus('sending')
 
-      setTimeout(function () {
-        $("#lnch").addClass("launching").text("Sending");
-        $("#lnch_btn").addClass("launching");
-      }, 0);
-      setTimeout(function () {
-        $("#lnch").addClass("launched").text("SENT");
-        $("#lnch_btn").addClass("launched");
-      }, 1500);
-      // Wait for 2.2 seconds so that the send button animation can be fully played before submitting the form
-      setTimeout(() => {
-        document.querySelector('form').submit();
-      }, 2200);
+      try {
+        const formData = new FormData(form)
+        const response = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json'
+          },
+          body: formData
+        })
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}))
+          throw new Error(data.error || 'Unable to send message')
+        }
+
+        setStatus('sent')
+        form.reset()
+      } catch (error) {
+        setStatus('')
+        swal('Error !', 'Message could not be sent. Please try again.', 'error')
+      }
     }
   });
 });
