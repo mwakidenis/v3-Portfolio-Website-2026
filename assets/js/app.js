@@ -449,19 +449,15 @@ $(function submitAnimation() {
   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mrbpogeb'
   const emailPattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 
+  form.action = FORMSPREE_ENDPOINT
+  form.method = 'POST'
+
   function setStatus(status) {
     if (status === 'sending') {
       submitButton.disabled = true
       submitButton.classList.add('launching')
       submitButton.textContent = 'Sending'
       launchIcon.classList.add('launching')
-      return
-    }
-
-    if (status === 'sent') {
-      submitButton.classList.add('launched')
-      submitButton.textContent = 'SENT'
-      launchIcon.classList.add('launched')
       return
     }
 
@@ -491,28 +487,9 @@ $(function submitAnimation() {
     }
     else {
       setStatus('sending')
-
-      try {
-        const formData = new FormData(form)
-        const response = await fetch(FORMSPREE_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json'
-          },
-          body: formData
-        })
-
-        if (!response.ok) {
-          const data = await response.json().catch(() => ({}))
-          throw new Error(data.error || 'Unable to send message')
-        }
-
-        setStatus('sent')
-        form.reset()
-      } catch (error) {
-        setStatus('')
-        swal('Error !', 'Message could not be sent. Please try again.', 'error')
-      }
+      setTimeout(() => {
+        form.submit()
+      }, 1200)
     }
   });
 });
